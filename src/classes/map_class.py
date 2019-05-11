@@ -31,8 +31,6 @@ class Map:
         self.__move_raft__()
         self.__move_map_down__()
 
-        pass
-
     def add_object_to_map(self, map_object):
         self.objects_on_map[map_object.position] = map_object
 
@@ -78,8 +76,16 @@ class Map:
 
     def __move_map_down__(self):
 
-        for i in range(self.size -1, 1):
-            pass
+        for i in range(self.size, 0, -1):
+            for j in range(self.size - 1, 0, -1):
+                if self.objects_on_map[(i, j + 1)].type is not "raft_and_human":
+                    self.objects_on_map[(i, j)].position = (i, j+1)
+                    object_on_map = self.objects_on_map[(i, j)]
+                    self.objects_on_map.update({(self.objects_on_map[(i, j)].position):object_on_map})
+
+    def __add_random__(self):
+        pass
+
 
     def __find_empty_position_for_raft__(self):
         return random.choice([value.position for value in self.objects_on_map.values()

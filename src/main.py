@@ -15,5 +15,5 @@ if __name__ == "__main__":
 
 
 
-        # if not world.map.__find_raft__().human:
-        #      break
+        if not world.round.count < 20:
+              break

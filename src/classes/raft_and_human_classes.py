@@ -2,6 +2,7 @@ import random
 from empty_object_class import EmptyObjectAbstract
 from water_class import Water
 from Food_class import Food
+import sys
 
 
 class RaftAndHuman(EmptyObjectAbstract):
@@ -38,13 +39,18 @@ class RaftAndHuman(EmptyObjectAbstract):
         elif self.human._is_hungry:
             foods = sorted(map.get_food(), key=lambda food: self.position[0] - food.position[0] + self.position[1] - food.position[1])
             print(foods)
-            return foods[0].position
+            if foods:
+                return foods[0].position
+            elif not foods:
+                return None
 
     def simulation(self, map):
         self.__get_to_inv__()
 
         self.human.human_simulation()
+        print(self.human)
         if self.human is None:
+            del self.human
             map.remove_object_from_map(self)
         if self.human._is_hungry:
             food_in_inv = [object for object in self.raft.inventory if object.type == 'food']
@@ -53,7 +59,7 @@ class RaftAndHuman(EmptyObjectAbstract):
                 del food_in_inv[0]
 
     def __get_to_inv__(self):
-        
+        pass
 
 class Raft:
 
