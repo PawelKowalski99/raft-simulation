@@ -21,7 +21,6 @@ class RaftAndHuman(EmptyObjectAbstract):
                 return None
             elif self.human._is_hungry:
                 foods = sorted(map.get_food(), key=lambda food: self.position[0] - food.position[0] + self.position[1] - food.position[1])
-                print(foods)
                 if foods:
                     return foods[0].position
                 elif not foods:
