@@ -15,5 +15,5 @@ if __name__ == "__main__":
 
 
 
-        if not world.round.count < 20:
+        if not world.round.count < 40:
               break
