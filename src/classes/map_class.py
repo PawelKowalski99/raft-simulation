@@ -77,31 +77,37 @@ class Map:
 
     def __move_map_down__(self):
 
+        raft_inv = self.__find_raft__().raft.inventory
         for i in range(self.size, 0, -1):
             for j in range(self.size - 1, 0, -1):
                 if self.objects_on_map[(i, j + 1)].type is not "raft_and_human":
-                    self.objects_on_map[(i, j)].position = (i, j+1)
                     object_on_map = self.objects_on_map[(i, j)]
-                    self.objects_on_map.update({(self.objects_on_map[(i, j)].position):object_on_map})
+                    object_on_map.position = (i, j + 1)
+                    self.objects_on_map.update({object_on_map.position: object_on_map})
+                    print((i, j), self.objects_on_map[(i, j)])
 
-                elif self.objects_on_map[(i, j + 1)].type is "raft_and_human":
+                elif self.objects_on_map[(i, j + 1)].type is "raft_and_human" and \
+                        len(raft_inv['stick']) + len(raft_inv['food']) < self.__find_raft__().raft.inv_slots:
+
                     if self.objects_on_map[(i, j)].type is "obstacle":
                         pass
 
                     elif self.objects_on_map[(i, j)].type is "food":
-                        print(self.__find_raft__().raft.inventory["food"])
-                        self.__find_raft__().raft.inventory["food"].append(self.objects_on_map[(i, j)])
+                        print(raft_inv["food"])
+                        raft_inv["food"].append(self.objects_on_map[(i, j)])
 
                     elif self.objects_on_map[(i, j)].type is "stick":
-                        pass
+                        raft_inv["stick"].append(self.objects_on_map[(i, j)])
 
                     self.objects_on_map[(i, j - 1)].position = (i, j)
                     object_on_map = self.objects_on_map[(i, j - 1)]
-                    self.objects_on_map.update({(self.objects_on_map[(i, j - 1)].position): object_on_map})
+                    self.objects_on_map.update({self.objects_on_map[(i, j - 1)].position: object_on_map})
 
     def __add_random__(self):
         for i in range(self.size, 0, -1):
-            random_object = random.choice([Water((i,10)), Water((i,10)), Water((i,10)), Food((i,10)), Stick((i,10)), Obstacle((i,10))])
+            random_object = random.choice([Water((i, 10)), Water((i, 10)),
+                                           Water((i, 10)), Food((i, 10)),
+                                           Stick((i, 10)), Obstacle((i, 10))])
             self.objects_on_map.update({(i, 1): random_object})
 
     def __find_empty_position_for_raft__(self):

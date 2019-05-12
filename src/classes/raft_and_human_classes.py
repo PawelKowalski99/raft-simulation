@@ -38,7 +38,7 @@ class RaftAndHuman(EmptyObjectAbstract):
             self.raft.inventory['food'].pop(0)
         if self.raft.inventory['stick'] and self.raft._durability < 40:
             self.raft._durability += self.raft.inventory['stick'][0].effect_status
-            self.raft.inventory['food'].pop(0)
+            self.raft.inventory['stick'].pop(0)
         if self.human is None:
             del self.human
             map.remove_object_from_map(self)
@@ -55,7 +55,7 @@ class RaftAndHuman(EmptyObjectAbstract):
 class Raft:
 
     def __init__(self):
-        self.__inv_slots = random.randint(5, 10)
+        self.inv_slots = random.randint(5, 10)
         self.inventory = {
             "stick": [],
             "food": [],
