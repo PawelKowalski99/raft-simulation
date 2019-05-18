@@ -1,5 +1,6 @@
 import random
 from abc import ABC
+
 from Food_class import Food
 from map.board_data_abstract_class import BoardDataAbstract
 from obstacle_class import Obstacle

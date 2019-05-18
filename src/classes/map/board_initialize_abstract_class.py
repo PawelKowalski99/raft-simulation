@@ -12,6 +12,11 @@ from water_class import Water
 class BoardInitializeAbstract(BoardDataAbstract, ABC):
 
     def initialize(self, reader):
+        """
+        Initialize new map using given info from .csv
+        :param reader:
+        :return:
+        """
         self.__create_empty_map__()
 
         self.add_object_to_map(RaftAndHuman(self.__find_empty_position_for_raft__()))
