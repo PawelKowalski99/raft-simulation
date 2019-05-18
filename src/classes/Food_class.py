@@ -11,11 +11,11 @@ class Food(EffectObjectAbstract):
         super(Food, self).__init__(position)
         self.type = 'food'
         self.symbol = 'F'
-        self.wholesomeness = random.randint(40, 61)
+        self.wholesomeness = random.randint(10, 25)
         self.__durability = random.randint(80, 101)
 
-    def food_simulation(self, board):
-        self.decomposition()
+    def food_simulation(self):
+        self.__durability -= 5
 
         if self.__durability <= 0:
-            board.remove_object_from_map(self)
+            del self

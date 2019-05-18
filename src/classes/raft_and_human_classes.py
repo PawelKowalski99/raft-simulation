@@ -2,6 +2,7 @@ import random
 from empty_object_class import EmptyObjectAbstract
 from water_class import Water
 from Food_class import Food
+# from main import action_queue
 
 
 class RaftAndHuman(EmptyObjectAbstract):
@@ -39,7 +40,7 @@ class RaftAndHuman(EmptyObjectAbstract):
         if self.raft.inventory['stick'] and self.raft._durability < 40:
             self.raft._durability += self.raft.inventory['stick'][0].effect_status
             self.raft.inventory['stick'].pop(0)
-        if self.human is None:
+        if self.human.is_dead:
             del self.human
             map.remove_object_from_map(self)
         #if self.human._is_hungry:
@@ -72,13 +73,15 @@ class Raft:
 class Human:
 
     def __init__(self):
+        self.is_dead = False
         self._is_hungry = False
         self._hungry_status = random.randint(60, 101)
 
     def human_simulation(self):
         self._hungry_status -= 5
-        if self._hungry_status <= 0:
-            del self
+        print(self._hungry_status)
+        if self._hungry_status < 0:
+            self.is_dead = True
 
         elif self._hungry_status <= 40:
             self._is_hungry = True

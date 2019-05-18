@@ -1,6 +1,7 @@
-from empty_object_class import EmptyObjectAbstract
-from abc import ABC, abstractmethod
 import random
+from abc import ABC, abstractmethod
+
+from empty_object_class import EmptyObjectAbstract
 
 
 class EffectObjectAbstract(EmptyObjectAbstract, ABC):
