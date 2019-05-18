@@ -84,7 +84,6 @@ class Map:
                     object_on_map = self.objects_on_map[(i, j)]
                     object_on_map.position = (i, j + 1)
                     self.objects_on_map.update({object_on_map.position: object_on_map})
-                    print((i, j), self.objects_on_map[(i, j)])
 
                 elif self.objects_on_map[(i, j + 1)].type is "raft_and_human" and \
                         len(raft_inv['stick']) + len(raft_inv['food']) < self.__find_raft__().raft.inv_slots:
@@ -93,7 +92,6 @@ class Map:
                         pass
 
                     elif self.objects_on_map[(i, j)].type is "food":
-                        print(raft_inv["food"])
                         raft_inv["food"].append(self.objects_on_map[(i, j)])
 
                     elif self.objects_on_map[(i, j)].type is "stick":

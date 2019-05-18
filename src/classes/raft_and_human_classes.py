@@ -77,7 +77,7 @@ class Human:
 
     def human_simulation(self):
         self._hungry_status -= 5
-        if self._hungry_status < 0:
+        if self._hungry_status <= 0:
             del self
 
         elif self._hungry_status <= 40:
