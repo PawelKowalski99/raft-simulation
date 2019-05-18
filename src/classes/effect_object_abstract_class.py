@@ -11,4 +11,4 @@ class EffectObjectAbstract(EmptyObjectAbstract, ABC):
     @abstractmethod
     def __init__(self, position):
         super(EffectObjectAbstract, self).__init__(position)
-        self.effect_status = random.randint(20, 40)
+        self.effect_object_value = random.randint(20, 40)

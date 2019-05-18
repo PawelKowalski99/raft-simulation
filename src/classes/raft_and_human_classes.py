@@ -1,8 +1,6 @@
 import random
 from empty_object_class import EmptyObjectAbstract
-from water_class import Water
-from Food_class import Food
-# from main import action_queue
+from RaftOrHumanSimulationAbstract import RaftOrHumanSimulationAbstract
 
 
 class RaftAndHuman(EmptyObjectAbstract):
@@ -14,35 +12,57 @@ class RaftAndHuman(EmptyObjectAbstract):
         self.type = 'raft_and_human'
         self.symbol = 'R'
 
-    def get_end_position(self, map):
+    def get_end_position(self, board):
         try:
-            if map.objects_on_map[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-            not (map.objects_on_map[(self.position[0] + 1, self.position[1] - 1)].type or
-                 map.objects_on_map[(self.position[0] - 1, self.position[1] - 1)].type) == "obstacle":
-                return None
-            elif self.human._is_hungry:
-                foods = sorted(map.get_food(), key=lambda food: self.position[0] - food.position[0] + self.position[1] - food.position[1])
+            if board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] not in board.objects_on_board or \
+                    board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] not in board.objects_on_board:
+                if board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
+                     board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] != "obstacle":
+                    return board.objects_on_board[(self.position[0] + 1, self.position[1])].position
+                elif board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
+                     board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] != "obstacle":
+                    return board.objects_on_board[(self.position[0] - 1, self.position[1])].position
+
+            if board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] in board.objects_on_board or \
+               board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] in board.objects_on_board:
+                if board.objects_on_board[(self.position[0], self.position[1] - 1)].type != "obstacle" and \
+                      (board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)].type == "obstacle" and
+                        board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type) == "obstacle":
+                    return self.position
+
+                elif board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
+                        board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] is None:
+                    print(board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)])
+                    return self.position
+
+            elif self.human.effect_status:
+                foods = sorted(board.get_food(),
+                               key=lambda food:
+                               self.position[0] - food.position[0] + self.position[1] - food.position[1])
                 if foods:
-                    return foods[0].position
+                    print(foods[0].position)
+                    if board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type is not "obstacle":
+                        return foods[0].position
                 elif not foods:
                     return None
-        except:
+        except AttributeError:
             pass
 
-    def simulation(self, map):
+    def simulation(self, board):
         self.__get_to_inv__()
-        self.human.human_simulation()
-        self.raft.raft_simulation()
+        self.human.simulation()
+        self.raft.simulation()
 
-        if self.raft.inventory['food'] and self.human._is_hungry is True:
-            self.human._hungry_status += self.raft.inventory['food'][0].wholesomeness
+        if self.raft.inventory['food'] and self.human.effect_status is True:
+            self.human.effect_value += self.raft.inventory['food'][0].wholesomeness
             self.raft.inventory['food'].pop(0)
-        if self.raft.inventory['stick'] and self.raft._durability < 40:
-            self.raft._durability += self.raft.inventory['stick'][0].effect_status
+        if self.raft.inventory['stick'] and self.raft.effect_value < 40:
+            self.raft.effect_value += self.raft.inventory['stick'][0].effect_object_value
             self.raft.inventory['stick'].pop(0)
-        if self.human.is_dead:
+        if self.human.is_gone or self.raft.is_gone:
             del self.human
-            map.remove_object_from_map(self)
+            board.remove_object_from_map(self)
+
         #if self.human._is_hungry:
             #food_in_inv = [object for object in self.raft.inventory if object.type == 'food']
            # if food_in_inv:
@@ -53,40 +73,30 @@ class RaftAndHuman(EmptyObjectAbstract):
         pass
 
 
-class Raft:
+class Raft(RaftOrHumanSimulationAbstract):
 
     def __init__(self):
+        super(Raft, self).__init__()
         self.inv_slots = random.randint(5, 10)
         self.inventory = {
             "stick": [],
             "food": [],
         }
-        self._durability = random.randint(60, 101)
 
     def add_to_inventory(self):
         pass
 
-    def raft_simulation(self):
-        self._durability -= 5
+    def simulation(self):
+        super(Raft, self).simulation()
 
 
-class Human:
+class Human(RaftOrHumanSimulationAbstract):
 
     def __init__(self):
-        self.is_dead = False
-        self._is_hungry = False
-        self._hungry_status = random.randint(60, 101)
+        super(Human, self).__init__()
 
-    def human_simulation(self):
-        self._hungry_status -= 5
-        print(self._hungry_status)
-        if self._hungry_status < 0:
-            self.is_dead = True
-
-        elif self._hungry_status <= 40:
-            self._is_hungry = True
-        elif self._hungry_status >= 80:
-            self._is_hungry = False
+    def simulation(self):
+        super(Human, self).simulation()
 
     def eat(self):
         pass

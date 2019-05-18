@@ -1,12 +1,12 @@
 from round_class import Round
-from map.map_class import Map
+from map.board_class import Board
 
 
 class World:
 
     def __init__(self, size):
         self.round = Round()
-        self.map = Map(size)
+        self.map = Board(size)
 
     def initialize(self, reader):
         self.map.initialize(reader)
