@@ -24,9 +24,10 @@ class Board(BoardInitializeAbstract, BoardSimulationAbstract):
         for key, value in self.objects_on_board.items():
             print(key, value)
 
-    def get_food(self):
+    def get_thing(self, thing):
         return [object_on_map for object_on_map in self.objects_on_board.values() if
-                object_on_map.type is 'food']
+                object_on_map.type is thing]
+
 
     def __find_empty_position__(self):
         return random.choice([value.position for value in self.objects_on_board.values()

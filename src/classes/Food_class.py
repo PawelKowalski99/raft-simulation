@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
 import random
+
 from effect_object_abstract_class import EffectObjectAbstract
 
 
@@ -11,7 +11,7 @@ class Food(EffectObjectAbstract):
         super(Food, self).__init__(position)
         self.type = 'food'
         self.symbol = 'F'
-        self.wholesomeness = random.randint(20, 40)
+        self.wholesomeness = random.randint(30, 45)
         self.__durability = random.randint(80, 101)
 
     def food_simulation(self):

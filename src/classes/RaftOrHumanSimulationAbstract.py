@@ -9,7 +9,7 @@ class RaftOrHumanSimulationAbstract(ABC):
     @abstractmethod
     def __init__(self):
         self.is_gone = False
-        self.effect_value = random.randint(65, 100)
+        self.effect_value = random.randint(70, 100)
         self.effect_status = False
 
     @abstractmethod
@@ -20,7 +20,7 @@ class RaftOrHumanSimulationAbstract(ABC):
             self.is_gone = True
         elif self.effect_value <= 40:
             self.effect_status = True
-        elif self.effect_value >= 75:
+        elif self.effect_value >= 60:
             self.effect_status = False
 
         print(self.effect_value)

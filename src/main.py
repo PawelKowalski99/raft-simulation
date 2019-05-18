@@ -1,6 +1,5 @@
 from reader_class import Reader
 from world_class import World
-from raft_and_human_classes import RaftAndHuman
 
 if __name__ == "__main__":
     # action_queue = []

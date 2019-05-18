@@ -10,3 +10,4 @@ class Stick(EffectObjectAbstract):
         super(Stick, self).__init__(position)
         self.type = 'stick'
         self.symbol = 'S'
+        self.repair_value = random.randint(30, 45)

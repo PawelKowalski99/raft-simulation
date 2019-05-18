@@ -14,37 +14,50 @@ class RaftAndHuman(EmptyObjectAbstract):
 
     def get_end_position(self, board):
         try:
-            if board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] not in board.objects_on_board or \
-                    board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] not in board.objects_on_board:
+            if (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board or \
+                    (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
                 if board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-                     board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] != "obstacle":
-                    return board.objects_on_board[(self.position[0] + 1, self.position[1])].position
-                elif board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-                     board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] != "obstacle":
+                     (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board:
                     return board.objects_on_board[(self.position[0] - 1, self.position[1])].position
-
-            if board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] in board.objects_on_board or \
-               board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)] in board.objects_on_board:
-                if board.objects_on_board[(self.position[0], self.position[1] - 1)].type != "obstacle" and \
-                      (board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)].type == "obstacle" and
-                        board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type) == "obstacle":
-                    return self.position
-
                 elif board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-                        board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)] is None:
-                    print(board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)])
-                    return self.position
+                     (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
+                    return board.objects_on_board[(self.position[0] + 1, self.position[1])].position
+            # [W][O][X]   or   [X][O][W]
+            # [W][R][X]        [X][R][W]
 
-            elif self.human.effect_status:
-                foods = sorted(board.get_food(),
+            elif (self.position[0] + 1, self.position[1] - 1) in board.objects_on_board and \
+                 (self.position[0] - 1, self.position[1] - 1) in board.objects_on_board:
+
+                if board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle":
+                    if board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type == "obstacle":
+                        return self.position[0] + 1, self.position[1] - 1
+                    elif board.objects_on_board[(self.position[0] + 1, self.position[1] - 1)].type == "obstacle":
+                        return self.position[0] - 1, self.position[1] - 1
+                    else:
+                        return random.choice([(self.position[0] + 1, self.position[1] - 1),
+                                              (self.position[0] - 1, self.position[1] - 1)])
+
+            if self.human.effect_status:
+                foods = sorted(board.get_thing("food"),
                                key=lambda food:
                                self.position[0] - food.position[0] + self.position[1] - food.position[1])
                 if foods:
                     print(foods[0].position)
-                    if board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type is not "obstacle":
-                        return foods[0].position
+                    return foods[0].position
                 elif not foods:
-                    return None
+                    return self.position
+            elif self.raft.effect_status:
+                sticks = sorted(board.get_thing("stick"),
+                               key=lambda stick:
+                               self.position[0] - stick.position[0] + self.position[1] - stick.position[1])
+                if sticks:
+                    print(sticks[0].position)
+                    return sticks[0].position
+                elif not sticks:
+                    return self.position
+            else:
+                return self.position
+
         except AttributeError:
             pass
 
@@ -56,8 +69,8 @@ class RaftAndHuman(EmptyObjectAbstract):
         if self.raft.inventory['food'] and self.human.effect_status is True:
             self.human.effect_value += self.raft.inventory['food'][0].wholesomeness
             self.raft.inventory['food'].pop(0)
-        if self.raft.inventory['stick'] and self.raft.effect_value < 40:
-            self.raft.effect_value += self.raft.inventory['stick'][0].effect_object_value
+        if self.raft.inventory['stick'] and self.raft.effect_status is True:
+            self.raft.effect_value += self.raft.inventory['stick'][0].repair_value
             self.raft.inventory['stick'].pop(0)
         if self.human.is_gone or self.raft.is_gone:
             del self.human
@@ -100,3 +113,4 @@ class Human(RaftOrHumanSimulationAbstract):
 
     def eat(self):
         pass
+
