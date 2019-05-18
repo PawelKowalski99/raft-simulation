@@ -1,5 +1,5 @@
 from round_class import Round
-from map_class import Map
+from map.map_class import Map
 
 
 class World:
@@ -16,9 +16,3 @@ class World:
         self.round.run()
         raft_and_human.simulation(self.map)
         self.map.move()
-
-
-
-
-
-
