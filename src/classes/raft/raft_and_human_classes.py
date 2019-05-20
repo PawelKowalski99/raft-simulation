@@ -1,6 +1,6 @@
 import random
 from empty_object_class import EmptyObjectAbstract
-from RaftOrHumanSimulationAbstract import RaftOrHumanSimulationAbstract
+from raft.RaftOrHumanSimulationAbstract import RaftOrHumanSimulationAbstract
 
 
 class RaftAndHuman(EmptyObjectAbstract):

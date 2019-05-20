@@ -4,7 +4,7 @@ from abc import ABC
 from Food_class import Food
 from map.board_data_abstract_class import BoardDataAbstract
 from obstacle_class import Obstacle
-from raft_and_human_classes import RaftAndHuman
+from raft.raft_and_human_classes import RaftAndHuman
 from stick_class import Stick
 from water_class import Water
 
