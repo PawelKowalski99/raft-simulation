@@ -14,8 +14,7 @@ class Food(EffectObjectAbstract):
         self.wholesomeness = random.randint(30, 45)
         self.__durability = random.randint(80, 101)
 
-    def food_simulation(self):
+    def simulation(self):
         self.__durability -= 5
-
         if self.__durability <= 0:
             del self

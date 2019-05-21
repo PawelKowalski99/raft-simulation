@@ -67,7 +67,7 @@ class BoardSimulationAbstract(BoardDataAbstract, ABC):
 
     def __add_random__(self):
         for i in range(self.size, 0, -1):
-            random_object = random.choice([Water((i, 10)), Water((i, 10)),
-                                           Water((i, 10)), Food((i, 10)),
-                                           Stick((i, 10)), Obstacle((i, 10))])
-            self.objects_on_board.update({(i, 1): random_object})
+            random_object = random.choice([Water((i, 1)), Water((i, 1)),
+                                           Water((i, 1)), Food((i, 1)),
+                                           Stick((i, 1)), Obstacle((i, 1))])
+            self.add_object_to_map(random_object)

@@ -42,7 +42,7 @@ class RaftAndHuman(EmptyObjectAbstract):
                                key=lambda food:
                                self.position[0] - food.position[0] + self.position[1] - food.position[1])
                 if foods:
-                    print(foods[0].position)
+                    print(foods[0].position, 'next goal is food')
                     return foods[0].position
                 elif not foods:
                     return self.position
@@ -51,7 +51,7 @@ class RaftAndHuman(EmptyObjectAbstract):
                                key=lambda stick:
                                self.position[0] - stick.position[0] + self.position[1] - stick.position[1])
                 if sticks:
-                    print(sticks[0].position)
+                    print(sticks[0].position, 'next goal is stick')
                     return sticks[0].position
                 elif not sticks:
                     return self.position
@@ -75,6 +75,10 @@ class RaftAndHuman(EmptyObjectAbstract):
         if self.human.is_gone or self.raft.is_gone:
             del self.human
             board.remove_object_from_map(self)
+
+        for food in self.raft.inventory['food']:
+            food.simulation()
+
 
         #if self.human._is_hungry:
             #food_in_inv = [object for object in self.raft.inventory if object.type == 'food']
@@ -101,6 +105,7 @@ class Raft(RaftOrHumanSimulationAbstract):
 
     def simulation(self):
         super(Raft, self).simulation()
+        print(self.effect_value, 'durability raft value')
 
 
 class Human(RaftOrHumanSimulationAbstract):
@@ -110,6 +115,7 @@ class Human(RaftOrHumanSimulationAbstract):
 
     def simulation(self):
         super(Human, self).simulation()
+        print(self.effect_value, 'hunger value')
 
     def eat(self):
         pass

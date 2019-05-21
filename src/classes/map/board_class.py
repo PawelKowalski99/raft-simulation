@@ -28,7 +28,6 @@ class Board(BoardInitializeAbstract, BoardSimulationAbstract):
         return [object_on_map for object_on_map in self.objects_on_board.values() if
                 object_on_map.type is thing]
 
-
     def __find_empty_position__(self):
         return random.choice([value.position for value in self.objects_on_board.values()
                               if value.type is 'water' and value.position[1] == 1])

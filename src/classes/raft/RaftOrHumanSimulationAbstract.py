@@ -23,4 +23,4 @@ class RaftOrHumanSimulationAbstract(ABC):
         elif self.effect_value >= 60:
             self.effect_status = False
 
-        print(self.effect_value)
+        # print(self.effect_value)

@@ -9,7 +9,7 @@ if __name__ == "__main__":
     world.initialize(reader)
 
     while True:
-        print(world.round.count)
+        print(world.round.count, 'Round count')
         # world.map.show_objects()
         world.map.show_map()
         try:
