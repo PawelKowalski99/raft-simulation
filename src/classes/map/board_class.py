@@ -1,7 +1,7 @@
 import random
 
-from map.board_initialize_abstract_class import BoardInitializeAbstract
-from map.board_simulation_abstract_class import BoardSimulationAbstract
+from classes.map.board_initialize_abstract_class import BoardInitializeAbstract
+from classes.map.board_simulation_abstract_class import BoardSimulationAbstract
 
 
 class Board(BoardInitializeAbstract, BoardSimulationAbstract):

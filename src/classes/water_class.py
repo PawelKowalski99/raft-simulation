@@ -1,4 +1,4 @@
-from empty_object_class import EmptyObjectAbstract
+from classes.empty_object_class import EmptyObjectAbstract
 
 
 class Water(EmptyObjectAbstract):

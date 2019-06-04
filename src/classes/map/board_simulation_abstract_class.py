@@ -1,11 +1,11 @@
 import random
 from abc import ABC
 
-from Food_class import Food
-from map.board_data_abstract_class import BoardDataAbstract
-from obstacle_class import Obstacle
-from stick_class import Stick
-from water_class import Water
+from classes.Food_class import Food
+from classes.map.board_data_abstract_class import BoardDataAbstract
+from classes.obstacle_class import Obstacle
+from classes.stick_class import Stick
+from classes.water_class import Water
 
 
 class BoardSimulationAbstract(BoardDataAbstract, ABC):

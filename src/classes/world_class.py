@@ -1,5 +1,5 @@
-from round_class import Round
-from map.board_class import Board
+from classes.round_class import Round
+from classes.map.board_class import Board
 
 
 class World:

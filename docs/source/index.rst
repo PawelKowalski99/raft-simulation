@@ -6,11 +6,6 @@
 Welcome to Raft Simulation's documentation!
 ===========================================
 
-.. automodule:: src
-   :members:
-   :show-inheritance:
-
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

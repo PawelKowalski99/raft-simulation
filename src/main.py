@@ -1,10 +1,11 @@
-from reader_class import Reader
-from world_class import World
+from classes.reader_class import Reader
+from classes.world_class import World
+import time
 
 if __name__ == "__main__":
+    print(__name__)
     # action_queue = []
     reader = Reader('initial_data.txt')
-
     world = World(reader.size)
     world.initialize(reader)
 
@@ -17,7 +18,7 @@ if __name__ == "__main__":
         except IndexError:
             break
 
-
+        time.sleep(1)
         # if isinstance(any(world.map.objects_on_map.values()), RaftAndHuman):
         #     break
         # if not world.round.count < 100:

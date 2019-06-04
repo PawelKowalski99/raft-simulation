@@ -1,6 +1,6 @@
 from abc import ABC
 
-from water_class import Water
+from classes.water_class import Water
 
 
 class BoardDataAbstract(ABC):

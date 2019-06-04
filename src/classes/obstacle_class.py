@@ -1,4 +1,4 @@
-from effect_object_abstract_class import EffectObjectAbstract
+from classes.effect_object_abstract_class import EffectObjectAbstract
 import random
 
 
