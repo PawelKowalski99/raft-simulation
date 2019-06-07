@@ -1,18 +1,30 @@
 import random
-from classes.empty_object_class import EmptyObjectAbstract
-from classes.raft.RaftOrHumanSimulationAbstract import RaftOrHumanSimulationAbstract
+from classes.entities.entity_abstract_class import EntityAbstract
+from classes.raft.DamagableAbstract import DamagableAbstract
 
 
-class RaftAndHuman(EmptyObjectAbstract):
+class RaftAndHuman(EntityAbstract):
+    """
+    Class created for composing human and raft as a one object on map
+    """
+    type = 'raft_and_human'
+    symbol = 'R'
 
     def __init__(self, position):
+        """
+        Initialization of object
+        :param (int, int) position: Position x, y given as int 0<x<board.size; 0<y<board.size
+        """
         super(RaftAndHuman, self).__init__(position)
         self.raft = Raft()
         self.human = Human()
-        self.type = 'raft_and_human'
-        self.symbol = 'R'
 
     def get_end_position(self, board):
+        """
+        Needed for choosing correct position to move on board
+        :param Board board: The place where RaftAndHuman moves
+        :return: position where to move (int, int)
+        """
         try:
             if (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board or \
                     (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
@@ -62,22 +74,28 @@ class RaftAndHuman(EmptyObjectAbstract):
             pass
 
     def simulation(self, board):
-        self.__get_to_inv__()
-        self.human.simulation()
-        self.raft.simulation()
+        """
+        Simulation of behaviour of RaftAndHuman on board
+        If human is hungry (effect_status = True), it is eating.
+        If raft is damaged (effect_status = True), it is being fixed.
+        :param Board board: The place where RaftAndHuman moves
+        """
+        self.human.simulate_damage()
+        self.raft.simulate_damage()
 
         if self.raft.inventory['food'] and self.human.effect_status is True:
-            self.human.effect_value += self.raft.inventory['food'][0].wholesomeness
+            self.human.effect_value += self.raft.inventory['food'][0].effect_value
             self.raft.inventory['food'].pop(0)
         if self.raft.inventory['stick'] and self.raft.effect_status is True:
-            self.raft.effect_value += self.raft.inventory['stick'][0].repair_value
+            self.raft.effect_value += self.raft.inventory['stick'][0].effect_value
             self.raft.inventory['stick'].pop(0)
         if self.human.is_gone or self.raft.is_gone:
             del self.human
             board.remove_object_from_map(self)
 
         for food in self.raft.inventory['food']:
-            food.simulation()
+            food.decomposition()
+        print(self.raft.inventory)
 
 
         #if self.human._is_hungry:
@@ -86,13 +104,44 @@ class RaftAndHuman(EmptyObjectAbstract):
                 #self.human += food_in_inv[0].effect_status
                 #del food_in_inv[0]
 
-    def __get_to_inv__(self):
-        pass
 
-
-class Raft(RaftOrHumanSimulationAbstract):
-
+class Human(DamagableAbstract):
+    """
+    Representation of human on raft.
+    It is an object which needs to survive as long as it can.
+    """
     def __init__(self):
+        """
+        Initialization of human object.
+        """
+        super(Human, self).__init__()
+
+    def simulate_damage(self):
+        """
+        Siumlation of human hunger.
+        If human is hungry it changes its effect status to True, if not to False.
+        """
+        self.effect_value -= 4
+
+        if self.effect_value < 0:
+            self.is_gone = True
+        elif self.effect_value <= 40:
+            self.effect_status = True
+        elif self.effect_value >= 60:
+            self.effect_status = False
+        print(self.effect_value, 'hunger value')
+
+
+class Raft(DamagableAbstract):
+    """
+    Representation of raft on ocean.
+    It is an object which helps human to survive.
+    Every round its durability is decreased
+    """
+    def __init__(self):
+        """
+        Initialization of raft object
+        """
         super(Raft, self).__init__()
         self.inv_slots = random.randint(5, 10)
         self.inventory = {
@@ -100,23 +149,29 @@ class Raft(RaftOrHumanSimulationAbstract):
             "food": [],
         }
 
-    def add_to_inventory(self):
-        pass
+    def add_to_inventory(self, item):
+        """
+        Adding items to raft inventory
+        :param EffectEntityAbstract item: Food or Stick object
+        """
+        if item.type == "food":
+            self.inventory["food"].append(item)
+        elif item.type == "stick":
+            self.inventory["stick"].append(item)
 
-    def simulation(self):
-        super(Raft, self).simulation()
+    def simulate_damage(self):
+        """
+        Simulation of usage of raft on ocean every round.
+        """
+        self.effect_value -= 2
+
+        if self.effect_value < 0:
+            self.is_gone = True
+        elif self.effect_value <= 40:
+            self.effect_status = True
+        elif self.effect_value >= 60:
+            self.effect_status = False
+
         print(self.effect_value, 'durability raft value')
 
-
-class Human(RaftOrHumanSimulationAbstract):
-
-    def __init__(self):
-        super(Human, self).__init__()
-
-    def simulation(self):
-        super(Human, self).simulation()
-        print(self.effect_value, 'hunger value')
-
-    def eat(self):
-        pass
 
