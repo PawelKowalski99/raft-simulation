@@ -1,5 +1,5 @@
 import random
-from classes.entities.Food_class import Food
+from classes.entities.food_class import Food
 from classes.entities.obstacle_class import Obstacle
 from classes.raft.raft_and_human_classes import RaftAndHuman
 from classes.entities.stick_class import Stick
