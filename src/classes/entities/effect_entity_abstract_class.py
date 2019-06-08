@@ -1,7 +1,7 @@
 import random
 from abc import ABC, abstractmethod
 
-from classes.enities.entity_abstract_class import EntityAbstract
+from classes.entities.entity_abstract_class import EntityAbstract
 
 
 class EffectEntityAbstract(EntityAbstract, ABC):
