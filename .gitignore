@@ -102,6 +102,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-
+src/results.csv
 
 .idea/
