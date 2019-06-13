@@ -10,4 +10,8 @@ class EntityAbstract(ABC):
 
     @abstractmethod
     def __init__(self, position):
+        """
+        Initialization
+        :param (int, int) position: x and y position where Stick should be put
+        """
         self.position = position
