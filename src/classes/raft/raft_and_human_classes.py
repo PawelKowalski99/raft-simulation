@@ -29,16 +29,16 @@ class RaftAndHuman(EntityAbstract):
             if (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board or \
                     (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
                 if board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-                     (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board:
+                        (self.position[0] + 1, self.position[1] - 1) not in board.objects_on_board:
                     return board.objects_on_board[(self.position[0] - 1, self.position[1])].position
                 elif board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle" and \
-                     (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
+                        (self.position[0] - 1, self.position[1] - 1) not in board.objects_on_board:
                     return board.objects_on_board[(self.position[0] + 1, self.position[1])].position
             # [W][O][X]   or   [X][O][W]
             # [W][R][X]        [X][R][W]
 
             elif (self.position[0] + 1, self.position[1] - 1) in board.objects_on_board and \
-                 (self.position[0] - 1, self.position[1] - 1) in board.objects_on_board:
+                    (self.position[0] - 1, self.position[1] - 1) in board.objects_on_board:
 
                 if board.objects_on_board[(self.position[0], self.position[1] - 1)].type == "obstacle":
                     if board.objects_on_board[(self.position[0] - 1, self.position[1] - 1)].type == "obstacle":
@@ -60,8 +60,8 @@ class RaftAndHuman(EntityAbstract):
                     return self.position
             elif self.raft.effect_status:
                 sticks = sorted(board.get_thing("stick"),
-                               key=lambda stick:
-                               self.position[0] - stick.position[0] + self.position[1] - stick.position[1])
+                                key=lambda stick:
+                                self.position[0] - stick.position[0] + self.position[1] - stick.position[1])
                 if sticks:
                     print(sticks[0].position, 'next goal is stick')
                     return sticks[0].position
@@ -90,19 +90,17 @@ class RaftAndHuman(EntityAbstract):
             self.raft.effect_value += self.raft.inventory['stick'][0].effect_value
             self.raft.inventory['stick'].pop(0)
         if self.human.is_gone or self.raft.is_gone:
-            del self.human
             board.remove_object_from_map(self)
 
         for food in self.raft.inventory['food']:
             food.decomposition()
-        print(self.raft.inventory)
+        # print(self.raft.inventory)
 
-
-        #if self.human._is_hungry:
-            #food_in_inv = [object for object in self.raft.inventory if object.type == 'food']
-           # if food_in_inv:
-                #self.human += food_in_inv[0].effect_status
-                #del food_in_inv[0]
+        # if self.human._is_hungry:
+        # food_in_inv = [object for object in self.raft.inventory if object.type == 'food']
+        # if food_in_inv:
+        # self.human += food_in_inv[0].effect_status
+        # del food_in_inv[0]
 
 
 class Human(DamagableAbstract):
@@ -110,6 +108,7 @@ class Human(DamagableAbstract):
     Representation of human on raft.
     It is an object which needs to survive as long as it can.
     """
+
     def __init__(self):
         """
         Initialization of human object.
@@ -138,12 +137,13 @@ class Raft(DamagableAbstract):
     It is an object which helps human to survive.
     Every round its durability is decreased
     """
+
     def __init__(self):
         """
         Initialization of raft object
         """
         super(Raft, self).__init__()
-        self.inv_slots = random.randint(5, 10)
+        self.__inv_slots = random.randint(5, 10)
         self.inventory = {
             "stick": [],
             "food": [],
@@ -154,9 +154,11 @@ class Raft(DamagableAbstract):
         Adding items to raft inventory
         :param EffectEntityAbstract item: Food or Stick object
         """
-        if item.type == "food":
+        if item.type == "food" and \
+                len(self.inventory['stick']) + len(self.inventory['food']) < self.__inv_slots:
             self.inventory["food"].append(item)
-        elif item.type == "stick":
+        elif item.type == "stick" and \
+                len(self.inventory['stick']) + len(self.inventory['food']) < self.__inv_slots:
             self.inventory["stick"].append(item)
 
     def simulate_damage(self):
@@ -173,5 +175,3 @@ class Raft(DamagableAbstract):
             self.effect_status = False
 
         print(self.effect_value, 'durability raft value')
-
-

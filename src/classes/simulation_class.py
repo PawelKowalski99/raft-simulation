@@ -7,20 +7,18 @@ class Simulation:
     This class stores information about round and board
     """
 
-    def __init__(self, size):
+    def __init__(self):
         """
         Inizilatization method for simulation.
-        :param int size: Size of board
         """
         self.round = Round()
-        self.board = Board(size)
+        self.board = Board()
 
-    def initialize(self, reader):
+    def initialize(self):
         """
         Initialize board
-        :param Reader reader: Initialization information about amount of objects on board (2D map)
         """
-        self.board.initialize(reader)
+        self.board.initialize()
 
     def simulate(self):
         """
@@ -30,3 +28,4 @@ class Simulation:
         self.round.run()
         raft_and_human.simulation(self.board)
         self.board.move()
+        self.board.writer.write_to_csv()
