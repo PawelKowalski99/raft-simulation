@@ -154,12 +154,11 @@ class Raft(DamagableAbstract):
         Adding items to raft inventory
         :param EffectEntityAbstract item: Food or Stick object
         """
-        if item.type == "food" and \
-                len(self.inventory['stick']) + len(self.inventory['food']) < self.__inv_slots:
-            self.inventory["food"].append(item)
-        elif item.type == "stick" and \
-                len(self.inventory['stick']) + len(self.inventory['food']) < self.__inv_slots:
-            self.inventory["stick"].append(item)
+        if len(self.inventory['stick']) + len(self.inventory['food']) < self.__inv_slots:
+            if item.type == "food":
+                self.inventory["food"].append(item)
+            elif item.type == "stick":
+                self.inventory["stick"].append(item)
 
     def simulate_damage(self):
         """
